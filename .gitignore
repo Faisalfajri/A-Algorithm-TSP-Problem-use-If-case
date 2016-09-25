@@ -1,0 +1,57 @@
+/*
+Title   : A* Algoritm TSP Problem use If-Caase
+Author  : Faisal Fajri Rahani (faisal.fajri.r@gmail.com)
+*/
+#include <iostream>
+using namespace std;
+int AB,AC,BD,CE,DE,DF,EF;
+
+int main() {
+
+    //Keluaran awal jaringan TSP
+    cout<< "   *B * * * D*   \n";
+    cout<< "  *         * *  \n";
+    cout<< " *          *  * \n";
+    cout<< "A           *   F\n";
+    cout<< " *          *  * \n";
+    cout<< "  *         * *  \n";
+    cout<< "   *C * * * E*   \n";
+
+    //Masukkan jarak kota TSP
+    cout<< "Masukkan jarak kota A ke B = "; cin>> AB;
+    cout<< "Masukkan jarak kota A ke C = "; cin>> AC;
+    cout<< "Masukkan jarak kota B ke D = "; cin>> BD;
+    cout<< "Masukkan jarak kota C ke E = "; cin>> CE;
+    cout<< "Masukkan jarak kota D ke E = "; cin>> DE;
+    cout<< "Masukkan jarak kota D ke F = "; cin>> DF;
+    cout<< "Masukkan jarak kota E ke F = "; cin>> EF;
+
+    //Pemilihan langkah Pertama
+    cout<< "Langkah 1"<<endl;
+    //Jika AB lebih kecil dari AC maka menuju ke B
+    if (AB <= AC){cout<<"f(b)="<<AB<<"+"<<BD+DF<<endl;}
+    //Jika AC lebih kecil dari AB maka menuju ke C
+    else {cout<<"f(c)="<<AC<<"+"<<CE+EF<<endl;}
+
+    //Pemilihan langkah Kedua
+    cout<< "Langkah 2"<<endl;
+    if (AB+BD+DF <= AC+CE+EF){cout<<"f(d)="<<AB+BD<<"+"<<EF<<endl;}
+    else {cout<<"f(e)="<<AC+CE<<"+"<<EF<<endl;}
+
+    cout<< "Langkah 3"<<endl;
+    if (AB+BD+DF <= AB+BD+DE+EF){cout<<"f(f)="<<AB+BD+DF<<"+ 0"<<endl;}
+    else if (AC+CE+EF <= AC+CE+DE+EF){cout<<"f(f)="<<AC+CE+EF<<"+ 0"<<endl;}
+    else if (AB+BD+DF >= AB+BD+DE+EF)
+        {
+            cout<<"f(e)="<<AB+BD+DE<<"+"<<EF<<endl;
+            cout<<"Langkah 4"<<endl;
+            cout<<"f(f)="<<AB+BD+DE+EF<<"+ 0"<<endl;
+        }
+    else
+        {
+            cout<<"f(d)="<<AC+CE+DE<<"+"<<DF<<endl;
+            cout<< "Langkah 4"<<endl;
+            cout<<"f(f)="<<AC+CE+DE+DF<<"+ 0"<<endl;
+        }
+    return 0;
+    }
