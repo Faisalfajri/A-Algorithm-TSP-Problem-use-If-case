@@ -35,7 +35,7 @@ int main() {
     cout<< "Masukkan nilai kota C = "; cin>> C;
     cout<< "Masukkan nilai kota D = "; cin>> D;
     cout<< "Masukkan nilai kota E = "; cin>> E;
-    cout<< "Masukkan nilai kota F = "; cin>> F;
+    //cout<< "Masukkan nilai kota F = "; cin>> F;
 
     //Pemilihan langkah 1
     cout<< "\n";
