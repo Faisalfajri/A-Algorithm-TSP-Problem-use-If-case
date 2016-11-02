@@ -1,7 +1,3 @@
-/*
-Title   : A* Algoritm TSP Problem use If-Caase
-Author  : Faisal Fajri Rahani (faisal.fajri.r@gmail.com)
-*/
 #include <iostream>
 using namespace std;
 int AB,AC,BD,CE,DE,DF,EF;
@@ -11,13 +7,13 @@ int pos, ext;
 int main() {
 
     //Keluaran awal jaringan TSP
-    cout<< "   *B * * * D*   \n";
+    cout<< "   B * * * D   \n";
     cout<< "  *         * *  \n";
     cout<< " *          *  * \n";
     cout<< "A           *   F\n";
     cout<< " *          *  * \n";
     cout<< "  *         * *  \n";
-    cout<< "   *C * * * E*   \n";
+    cout<< "   C * * * E   \n";
 
     //Masukkan jarak kota TSP
     cout<< "Masukkan jarak kota A ke B = "; cin>> AB;
@@ -35,85 +31,98 @@ int main() {
     cout<< "Masukkan nilai kota C = "; cin>> C;
     cout<< "Masukkan nilai kota D = "; cin>> D;
     cout<< "Masukkan nilai kota E = "; cin>> E;
-    //cout<< "Masukkan nilai kota F = "; cin>> F;
+    //nilai heuristik f otomatis 0 karene merupakan tujuan
+	//cout<< "Masukkan nilai kota F = "; cin>> F;
 
     //Pemilihan langkah 1
+    //enter
     cout<< "\n";
     cout<< "Langkah 1"<<endl;
-    cout<< "f (a) = 0 + "<<A<<endl;
+    //f(n)= G(n)+ h'(n)
+    cout<< "f(a) = 0 + "<<A<<endl;
 
     //Pemilihan langkah 2
     cout<< "\n";
     cout<< "Langkah 2"<<endl;
-    //Jika B lebih kecil dari C maka menuju ke B
+    //Jika B lebih kecil dari C, maka A menuju ke B
     // A->B
-    if (B <= C){pos = 1; cout<<"f(b) = "<<AB<<"+ "<<B<<endl;}
-    //Jika C lebih kecil dari B maka menuju ke C
+    if (AB+B <= AC+C){pos = 1; cout<<"f(b) = "<<AB<<" + "<<B<<endl;}
+    //Jika C lebih kecil dari B, maka A menuju ke C
     //A->C
-    else {pos = 2; cout<<"f(c) = "<<AC<<"+ "<<C<<endl;}
+    else {pos = 2; cout<<"f(c) = "<<AC<<" + "<<C<<endl;}
 
     //Pemilihan langkah 3
     cout<< "\n";
     cout<< "Langkah 3"<<endl;
+    //Posisi 1=B, 2=C, 3=D, 4=E, 5=F
+    //Jika posisi di B dan nilai f(d) lebih kecil dari f(c) maka ke D
     //A->B->D
-    if ((pos == 1) && (D <= AC+C))                      { pos = 3; cout<<"f(d) = "<<AB+BD<<"+ "<<D<<endl;}
+    if ((pos == 1) && (AB+BD+D <= AC+C))                      { pos = 3; cout<<"f(d) = "<<AB+BD<<" + "<<D<<endl;}
+    //Jika posisi di C dan nilai f(e) lebih kecil dari f(b)	maka ke E
     //A->C->E
-    else if ((pos == 2) && E <= (AB+B))                 { pos = 4; cout<<"f(e) = "<<AC+CE<<"+ "<<E<<endl;}
+    else if ((pos == 2) && (AC+CE+E <= AB+B))                 { pos = 4; cout<<"f(e) = "<<AC+CE<<" + "<<E<<endl;}
+	//Jika posisi di B dan nilai f(c) lebih kecil dari f(d) maka ke C
+    //A->B kembali ke A->C
+    else if ((pos == 1) && (AB+BD+D >= AC+C))                 { pos = 2; cout<<"f(c) = "<<AC<<" + "<<C<<endl;}
+    //Jika posisi di B dan nilai f(b) lebih kecil dari f(e)	maka ke B
+    //A->C kembali ke A->B
+    else if ((pos == 2) && (AC+CE+E >= AB+B))                 { pos = 1; cout<<"f(b) = "<<AB<<" + "<<B<<endl;}
+
 
     //Pemilihan langkah 4
     cout<< "\n";
     cout<< "Langkah 4"<<endl;
+
     //A->B->D->F
-    if ((pos == 3) && (F <= E) && (F <= AC+C))          { pos = 5; ext = 1; cout<<"f(f) = "<<AB+BD+DF<<"+ 0"<<endl;}
+    if ((pos == 3) && (AB+BD+DF+F <= AC+CE+E) && (AB+BD+DF+F <= AC+C))          { pos = 5; ext = 1; cout<<"f(f) = "<<AB+BD+DF<<" + 0"<<endl;}
     //A->C->E->F
-    else if ((pos == 4) && (F <= D) && (F <= AB+B))     { pos = 5; ext = 2; cout<<"f(f) = "<<AC+CE+EF<<"+ 0"<<endl;}
+    else if ((pos == 4) && (AC+CE+EF+F <= AB+BD+D) && (AC+CE+EF+F <= AB+B))     { pos = 5; ext = 2; cout<<"f(f) = "<<AC+CE+EF<<" + 0"<<endl;}
 
     //A->B->D->E
-    else if ((pos == 3) && (E <= F) && (E <= AC+C))     { pos = 4; cout<<"f(e) = "<<AB+BD+DE<<"+ "<<E<<endl;}
+    else if ((pos == 3) && (AB+BD+DE+E <= AB+BD+DF+F) && (AB+BD+DE+E <= AC+C))     { pos = 4; cout<<"f(e) = "<<AB+BD+DE<<" + "<<E<<endl;}
     //A->C->E->D
-    else if ((pos == 4) && (D <= F) && (D <= AB+B))     { pos = 3; cout<<"f(d) = "<<AC+CE+DE<<"+ "<<D<<endl;}
+    else if ((pos == 4) && (AC+CE+DE+D <= AC+CE+EF+F) && (AC+CE+DE+D <= AB+B))     { pos = 3; cout<<"f(d) = "<<AC+CE+DE<<" + "<<D<<endl;}
 
     //A->B->D Balik A->C
-    else if ((pos == 3) && (AC+C <= E) && (AC+C <= F))  { pos = 2; cout<<"f(c) = "<<AC+CE+DE<<"+ "<<D<<endl;}
+    else if ((pos == 3) && (AC+C <= AB+BD+DE+E) && (AC+C <= AB+BD+DF+F))  { pos = 2; cout<<"f(c) = "<<AC<<" + "<<C<<endl;}
     //A->C->E Balik A->B
-    else if ((pos == 4) && (AB+B <= D) && (AB+B <= F))  { pos = 1; cout<<"f(b) = "<<AC+CE+DE<<"+ "<<D<<endl;}
+    else if ((pos == 4) && (AB+B <= AC+CE+DE+D) && (AB+B <= AC+CE+EF+F))  { pos = 1; cout<<"f(b) = "<<AB<<" + "<<B<<endl;}
 
-    //else return 0;
+
+    else if ((pos == 2) && (AB+BD+D <= AC+CE+E))                            { pos = 3; cout<<"f(d) = "<<AB+BD<<" + "<<D<<endl;}
+
+    else if ((pos == 1) && (AC+CE+E <= AB+BD+D))                            { pos = 4; cout<<"f(e) = "<<AC+CE<<" + "<<E<<endl;}
 
     //Pemilihan Langkah 5
     //A->B->D->E->F
-    if ((pos == 4) && (F <= AC+C))         { pos = 5; ext = 3; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(f) = "<<AB+BD+DE+EF<<"+ 0"<<endl;}
+    if ((pos == 4) && (AB+BD+DF+F <= AC+C))         { pos = 5; ext = 3; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(f) = "<<AB+BD+DE+EF<<" + 0"<<endl;}
     //A->C->E->D->F
-    else if ((pos == 3) && (F <= AB+B))    { pos = 5; ext = 4; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(f) = "<<AC+CE+DE+DF<<"+ 0"<<endl;}
-
-//    //A->B->D->E Balik A->C
-//    else if ((pos == 4) && (F >= AC+C))    { pos = 3; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(c) = "<<AC<<"+ "<<C<<endl;}
-//    //A->C->E->D Balik A->B
-//    else if ((pos == 3) && (F >= AB+B))    { pos = 2; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(b) = "<<AB<<"+ "<<B<<endl;}
+    else if ((pos == 3) && (AC+CE+EF+F <= AB+B))    { pos = 5; ext = 4; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(f) = "<<AC+CE+DE+DF<<" + 0"<<endl;}
 
     //A->B->D Balik A->C->E
-    else if ((pos == 2) && (E <= AB+BD))        { pos = 4; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(e) = "<<AC+CE<<"+ "<<E<<endl;}
+    else if ((pos == 2) && (AC+CE+E <= AB+BD+D))        { pos = 4; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(e) = "<<AC+CE<<" + "<<E<<endl;}
     //A->C->E Balik A->B->D
-    else if ((pos == 1) && (D <= AC+CE))        { pos = 3; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(d) = "<<AB+BD<<"+ "<<D<<endl;}
+    else if ((pos == 1) && (AB+BD+D <= AC+CE+E))        { pos = 3; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(d) = "<<AB+BD<<" + "<<D<<endl;}
 
-    //else return 0;
+    //A->B->D->E Balik A->C
+    else if ((pos == 3) && (AB+BD+DF+F <= AC+CE+E))     { pos = 5; ext = 1; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(f) = "<<AB+BD+DF<<" + "<<F<<endl;}
+    //A->C->E->D Balik A->B
+    else if ((pos == 4) && (AC+CE+EF+F <= AB+BD+D))     { pos = 5; ext = 2; cout<< "\n"; cout<< "Langkah 5"<<endl; cout<<"f(b) = "<<AC+CE+EF<<" + "<<F<<endl;}
 
     //Pemilihan langkah 6
 
     //A->B->D Balik A->C->E->F
-    if ((pos == 4) && (F <= AC+C))        { pos = 5; ext = 2; cout<< "\n"; cout<< "Langkah 6"<<endl; cout<<"f(f) = "<<AC+CE+DE+DF<<"+ 0"<<endl;}
+    if ((pos == 4) && (AC+CE+DE+F <= AC+C))        { pos = 5; ext = 2; cout<< "\n"; cout<< "Langkah 6"<<endl; cout<<"f(f) = "<<AC+CE+DE+DF<<"+ 0"<<endl;}
     //A->C->E Balik A->B->D->F
-    else if ((pos == 3) && (F <= AB+B))   { pos = 5; ext = 1; cout<< "\n"; cout<< "Langkah 6"<<endl; cout<<"f(f) = "<<AB+BD+DE+EF<<"+ 0"<<endl;}
-//    //A->B->D->E Balik A->C->E
-//    else if ((pos == 3) && (F <= AB+B))   { pos = 5; ext = 1; cout<< "\n"; cout<< "Langkah 6"<<endl; cout<<"f(f) = "<<AB+BD+DE+EF<<"+ 0"<<endl;}
-//    //A->C->E->D Balik A->B->D
-//    else if
+    else if ((pos == 3) && (AB+BD+DF+F <= AB+B))   { pos = 5; ext = 1; cout<< "\n"; cout<< "Langkah 6"<<endl; cout<<"f(f) = "<<AB+BD+DE+EF<<"+ 0"<<endl;}
+
     cout<< "\n";
     cout<< "Langkah Tercepat adalah"<<endl;
-    if      (ext = 1) {cout<< "A -> B -> D -> F"<<endl;}
-    else if (ext = 2) {cout<< "A -> C -> E -> F"<<endl;}
-    else if (ext = 3) {cout<< "A -> B -> D -> E -> F"<<endl;}
-    else if (ext = 3) {cout<< "A -> C -> E -> D -> F"<<endl;}
+    if      (ext == 1) {cout<< "A -> B -> D -> F"<<endl;cout<<"f(f) = "<<AB+BD+DF<<" + "<<F<<endl;}
+    else if (ext == 2) {cout<< "A -> C -> E -> F"<<endl;cout<<"f(f) = "<<AC+CE+EF<<" + "<<F<<endl;}
+    else if (ext == 3) {cout<< "A -> B -> D -> E -> F"<<endl;cout<<"f(f) = "<<AB+BD+DE+EF<<" + "<<F<<endl;}
+    else if (ext == 3) {cout<< "A -> C -> E -> D -> F"<<endl;cout<<"f(f) = "<<AC+CE+DE+DF<<" + "<<F<<endl;}
 
     return 0;
     }
+
